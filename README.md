@@ -1,7 +1,5 @@
-# lwtg-mits-system
-🐺 LWTG MITS — Automated Futures Trading System
+# 🐺 LWTG MITS — Automated Futures Trading System
 
-LWTG MITS Automated Futures Trading System — Turnkey setup for prop firm accounts.
 **A fully automated, rules-based trading system built for prop firm accounts.**  
 Set it up once. It finds signals, places trades, logs everything, and keeps you informed — on any device, anywhere.
 
@@ -98,10 +96,20 @@ TradingView → Ghost Bot → Tradovate broker → GAS logging → Google Sheets
 **Step 1 — Read first**  
 Download and read `LWTG_MITS_README_FIRST_v2.docx` from the latest release. It takes 5 minutes and will save you hours of confusion.
 
-**Step 2 — Get the latest release**  
-Go to [Releases](../../releases) and download the most recent version. Everything you need is attached.
+**Step 2 — Install the Pine Scripts from TradingView**  
+Add both scripts to your charts directly from TradingView — this is the recommended install path for all users. You'll receive updates automatically whenever a new version is published.
 
-**Step 3 — Follow the User Guide**  
+| Script | TradingView Link |
+|---|---|
+| 🔵 LWTG MITS Indicator (v4.x) — live execution | [Install from TradingView](https://www.tradingview.com/script/arf9Umyg-LWTG-MITS-Indicator/) |
+| ⚪ LWTG MITS Strategy (v3.x) — paper trading | [Install from TradingView](https://www.tradingview.com/script/rgTN5rob-LWTG-MITS-Strategy/) |
+
+> ⚠️ **Do NOT paste the `.pine` source files manually** unless you are an advanced user who needs a specific version. Installing from TradingView ensures you always receive the latest updates automatically.
+
+**Step 3 — Get everything else from the latest release**  
+Go to [Releases](../../releases) and download the most recent version for the GAS script, User Guide, README FIRST, and Trading Log template.
+
+**Step 4 — Follow the User Guide**  
 `LWTG_MITS_User_Guide_v4_3.docx` walks through every setup step in order. Four phases, each building on the last. Phase 1 alone gets you trading live.
 
 ---
@@ -110,13 +118,14 @@ Go to [Releases](../../releases) and download the most recent version. Everythin
 
 **[→ Latest Release](../../releases/latest)**
 
-| File | Version |
-|---|---|
-| Pine Script Strategy (v3.x) | v3.1.16 |
-| Pine Script Indicator (v4.x) | v4.1.16 |
-| Google Apps Script | v7.9.33 |
-| User Guide | v4.3 |
-| README FIRST | v2 |
+| Component | Version | Install |
+|---|---|---|
+| Pine Script Indicator (v4.x) — live execution | v4.1.16 | [TradingView](https://www.tradingview.com/script/arf9Umyg-LWTG-MITS-Indicator/) |
+| Pine Script Strategy (v3.x) — paper trading | v3.1.16 | [TradingView](https://www.tradingview.com/script/rgTN5rob-LWTG-MITS-Strategy/) |
+| Google Apps Script | v7.9.33 | Download from release |
+| User Guide | v4.3 | Download from release |
+| README FIRST | v2 | Download from release |
+| Trading Log Template | v3 | Download from release |
 
 ---
 
