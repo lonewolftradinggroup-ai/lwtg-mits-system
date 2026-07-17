@@ -62,10 +62,12 @@ Contact via [GitHub Discussions](https://github.com/lonewolftradinggroup-ai/lwtg
 | **TradingView Pine v3.x** | Scores market conditions, fires signals on bar close. Paper/validation only. |
 | **TradingView Pine v4.x** | Same logic, fires intrabar. Live execution path to Ghost + GAS logging. |
 | **Ghost Bot** | Receives execution alerts, places bracket orders at Tradovate/Apex. |
-| **Google Apps Script** | Receives logging alerts, writes AlertLog + TradeLog, sends Telegram alerts. |
+| **Google Apps Script** | *(Optional)* Receives logging alerts, writes AlertLog + TradeLog, sends Telegram alerts. Not required for live trading. |
 | **Google Sheets** | Stores all trade history. AlertLog, TradeLog, Daily Summary, Session Analysis. |
 | **Trade Manager** | Live dashboard — positions, P&L, exit controls. |
 | **Trade Journal** | Calendar view of historical trades. |
+
+> 💡 **GAS logging is optional.** The trading system works without it — TradingView fires signals, Ghost executes orders at your broker. GAS adds trade logging, performance tracking, Telegram alerts, and the Trade Manager dashboard. If you just want signals and execution, skip GAS entirely and add it later when you're ready.
 
 ---
 
