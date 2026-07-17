@@ -12,7 +12,7 @@ Fully automated, rules-based futures trading system for prop firm accounts. Runs
 
 1. **Download the latest release** → [Releases](https://github.com/lonewolftradinggroup-ai/lwtg-mits-system/releases)
 2. **Read `README FIRST`** — it's in the release assets. Takes 5 minutes. Saves hours.
-3. **Copy the Trading Log template** → [Click here to copy to your Google Drive](https://docs.google.com/spreadsheets/d/1DKvFmXK9rvjNVBEdb-dQ6eCoCNe9UOJ-r-tzGqT1elM/copy)
+3. **Copy the Trading Log template** → [Click here to copy to your Google Drive](https://docs.google.com/spreadsheets/d/17p5wmDvsaXiw_VpUQYUecG6dpdlKwRdBKtY2-A-W-eg/copy)
 
 > ⚠️ **NEVER download the Trading Log as `.xlsx`** — importing xlsx into Google Sheets corrupts all date columns, breaks every Daily Summary formula, and causes phantom open positions in the Trade Manager. Always use the Google Sheets copy link above.
 
