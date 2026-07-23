@@ -12,12 +12,12 @@ This system represents hundreds of hours of development, backtesting, optimizati
 
 **Seriously. Read it before you do anything else.**
 
-Every common setup mistake, every "why isn't it working" question, every timezone issue, every webhook failure — it's covered in the documentation. Five minutes of reading saves hours of troubleshooting.
+Every common setup mistake, every "why isn't it working" question, every timezone issue, every webhook failure — it's covered in the User Guide. Five minutes of reading saves hours of troubleshooting.
 
 1. **Download the latest release** → [Releases](https://github.com/lonewolftradinggroup-ai/lwtg-mits-system/releases)
-2. **Read `README FIRST`** — it's in the release assets. Short, direct, essential.
-3. **Read the User Guide** — if you want to understand what you're running, it's all in there.
-4. **Copy the Trading Log template** → [Click here to copy to your Google Drive](https://docs.google.com/spreadsheets/d/17p5wmDvsaXiw_VpUQYUecG6dpdlKwRdBKtY2-A-W-eg/copy)
+2. **Read `LWTG_MITS_README_FIRST.docx`** — it's in the release assets. Short, direct, essential.
+3. **Read `LWTG_MITS_User_Guide.docx`** — also in the release assets. Every setting, every component, every troubleshooting step is in there. If you have a question, check here first.
+4. **Copy the Trading Log template** → [Click here to copy to your Google Drive](https://docs.google.com/spreadsheets/d/1v7EnR1MQfvfV01oCR74omKWT3sHnV07AdzfMAaucpZQ/edit?usp=sharing)
 
 > ⚠️ **NEVER download the Trading Log as `.xlsx`** — importing xlsx into Google Sheets corrupts all date columns, breaks every Daily Summary formula, and causes phantom open positions in the Trade Manager. Always use the Google Sheets copy link above. This is not a suggestion.
 
@@ -25,13 +25,17 @@ Every common setup mistake, every "why isn't it working" question, every timezon
 
 ## 📦 What's in the Release
 
+Files are named with a version suffix (e.g. `_v4_1_17`). The **latest version is always the highest number in the release assets.** When a new version drops, the old one is kept for reference. Always use the highest-numbered version of each file.
+
 | File | Description |
 |---|---|
-| `LWTG_MITS_v3_1_16.pine` | Strategy script — paper trading / strategy tester only |
-| `LWTG_MITS_v4_1_16.pine` | Indicator script — live Ghost execution path |
-| `LWTG_MITS_Trade_Logging_v7_9_37.js` | Google Apps Script — webhook logging + Telegram alerts |
-| `LWTG_MITS_README_FIRST_v2.docx` | Start here — install guide and v3/v4 comparison |
-| `LWTG_MITS_User_Guide_v4_7.docx` | Full system documentation |
+| `LWTG_MITS_v3_x_xx.pine` | Strategy script — paper trading / strategy tester only |
+| `LWTG_MITS_v4_x_xx.pine` | Indicator script — live Ghost execution path |
+| `LWTG_MITS_Trade_Logging_vX_X_XX.js` | Google Apps Script — webhook logging + Telegram alerts |
+| `LWTG_MITS_Trade_Manager_vX_X.html` | Live position dashboard |
+| `LWTG_MITS_Journal_vX_X.html` | Historical trade journal |
+| `LWTG_MITS_README_FIRST.docx` | Start here — install guide and v3/v4 comparison |
+| `LWTG_MITS_User_Guide.docx` | Full system documentation — read this |
 
 ---
 
@@ -48,7 +52,7 @@ This is the exact engine used to produce the published results. Hundreds of hour
 - `corrected_presets.py` — source-of-truth instrument parameters with full optimization history
 - `mits_optimizer.py` — Phase 2 sequential parameter optimizer (all instruments)
 - `optimize_mes.py`, `optimize_mnq.py`, `optimize_mgc.py`, `optimize_m2k.py` — per-instrument walk-forward optimizers
-- `LWTG_MITS_v3_1_16.pine` — Pine strategy script for TV strategy tester
+- `LWTG_MITS_v3_x_xx.pine` — Pine strategy script for TV strategy tester
 - Full README with Databento data setup, timezone notes, known limitations, and 4-step optimization workflow
 
 Contact via [GitHub Discussions](https://github.com/lonewolftradinggroup-ai/lwtg-mits-system/discussions) to request access.
@@ -91,9 +95,9 @@ No download needed — runs in your browser:
 | MES | 15m | ✅ ON | None |
 | MNQ | 15m | ❌ OFF | 10:00–12:00 |
 | MGC | 5m | ✅ ON | 10:00–12:00 |
-| M2K | 3m | ❌ OFF | 13:00–18:00 |
+| M2K | 15m | ❌ OFF | 13:00–18:00 |
 
-All settings are baked into the preset — selecting your instrument loads the optimized configuration automatically. The settings panel in TradingView shows override inputs, not active values. See Section 4.5 of the User Guide for a full explanation. The HUD on your chart is the source of truth.
+All settings are baked into the preset — selecting your instrument loads the optimized configuration automatically. The settings panel in TradingView shows override inputs, not active values. See the User Guide for a full explanation. The HUD on your chart is the source of truth.
 
 ---
 
