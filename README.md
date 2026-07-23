@@ -19,6 +19,8 @@ Every common setup mistake, every "why isn't it working" question, every timezon
 3. **Read `LWTG_MITS_User_Guide.docx`** — also in the release assets. Every setting, every component, every troubleshooting step is in there. If you have a question, check here first.
 4. **Copy the Trading Log template** → [Click here to copy to your Google Drive](https://docs.google.com/spreadsheets/d/1v7EnR1MQfvfV01oCR74omKWT3sHnV07AdzfMAaucpZQ/edit?usp=sharing)
 
+> ⚠️ **`lwtg-config.js` contains your Ghost webhook secrets.** Never commit it to GitHub, never share it. It is listed in `.gitignore`. Each user keeps their own copy locally.
+
 > ⚠️ **NEVER download the Trading Log as `.xlsx`** — importing xlsx into Google Sheets corrupts all date columns, breaks every Daily Summary formula, and causes phantom open positions in the Trade Manager. Always use the Google Sheets copy link above. This is not a suggestion.
 
 ---
@@ -32,7 +34,8 @@ Files are named with a version suffix (e.g. `_v4_1_17`). The **latest version is
 | `LWTG_MITS_v3_x_xx.pine` | Strategy script — paper trading / strategy tester only |
 | `LWTG_MITS_v4_x_xx.pine` | Indicator script — live Ghost execution path |
 | `LWTG_MITS_Trade_Logging_vX_X_XX.js` | Google Apps Script — webhook logging + Telegram alerts |
-| `LWTG_MITS_Trade_Manager_vX_X.html` | Live position dashboard |
+| `index.html` (Trade Manager) | Live position dashboard — rename from `LWTG_MITS_Trade_Manager_vX_X.html` |
+| `lwtg-config.js` | **Required companion** — your personal config (Ghost URLs, GAS URL, instruments). Fill in before first run. Never share. |
 | `LWTG_MITS_Journal_vX_X.html` | Historical trade journal |
 | `LWTG_MITS_README_FIRST.docx` | Start here — install guide and v3/v4 comparison |
 | `LWTG_MITS_User_Guide.docx` | Full system documentation — read this |
