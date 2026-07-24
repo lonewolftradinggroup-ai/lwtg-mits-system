@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QCC Strategy Leaderboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:        #0a0c10;
+    --surface:   #111318;
+    --surface2:  #181b22;
+    --border:    #1f2330;
+    --gold:      #c9a84c;
+    --gold-dim:  #8a6f2e;
+    --gold-glow: rgba(201,168,76,0.12);
+    --green:     #2ecc71;
+    --red:       #e74c3c;
+    --amber:     #f39c12;
+    --muted:     #4a5268;
+    --text:      #d4d8e8;
+    --text-dim:  #6b7494;
+    --mono:      'Space Mono', monospace;
+    --sans:      'Space Grotesk', sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+
+  /* ── BANNER ─────────────────────────────────────────────── */
+  .banner {
+    position: relative;
+    overflow: hidden;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 48px 40px 40px;
+  }
+
+  .banner::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(135deg, rgba(201,168,76,0.06) 0%, transparent 60%),
+      repeating-linear-gradient(
+        90deg,
+        transparent,
+        transparent 60px,
+        rgba(201,168,76,0.02) 60px,
+        rgba(201,168,76,0.02) 61px
+      );
+  }
+
+  .banner-inner {
+    position: relative;
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  .banner-left {}
+
+  .banner-eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .banner-eyebrow::before {
+    content: '';
+    display: inline-block;
+    width: 24px;
+    height: 1px;
+    background: var(--gold);
+  }
+
+  .banner-title {
+    font-size: clamp(28px, 5vw, 48px);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    color: #fff;
+  }
+
+  .banner-title span {
+    color: var(--gold);
+  }
+
+  .banner-sub {
+    margin-top: 10px;
+    font-size: 14px;
+    color: var(--text-dim);
+    font-family: var(--mono);
+  }
+
+  .banner-meta {
+    text-align: right;
+    font-size: 12px;
+    color: var(--text-dim);
+    font-family: var(--mono);
+    line-height: 2;
+  }
+
+  .banner-meta a {
+    color: var(--gold);
+    text-decoration: none;
+  }
+
+  .banner-meta a:hover { text-decoration: underline; }
+
+  /* ── WOLF MARK ──────────────────────────────────────────── */
+  .wolf-mark {
+    position: absolute;
+    right: 40px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 80px;
+    opacity: 0.04;
+    user-select: none;
+    pointer-events: none;
+  }
+
+  /* ── NAV ────────────────────────────────────────────────── */
+  nav {
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+    padding: 0 40px;
+  }
+
+  nav ul {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    list-style: none;
+    gap: 0;
+  }
+
+  nav a {
+    display: block;
+    padding: 14px 20px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-dim);
+    text-decoration: none;
+    border-bottom: 2px solid transparent;
+    transition: color 0.2s, border-color 0.2s;
+    font-family: var(--mono);
+    letter-spacing: 0.05em;
+  }
+
+  nav a:hover { color: var(--text); }
+  nav a.active { color: var(--gold); border-bottom-color: var(--gold); }
+
+  /* ── MAIN ───────────────────────────────────────────────── */
+  main {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 40px 40px 80px;
+  }
+
+  /* ── STATS BAR ──────────────────────────────────────────── */
+  .stats-bar {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 40px;
+  }
+
+  .stat {
+    background: var(--surface);
+    padding: 20px 24px;
+    text-align: center;
+  }
+
+  .stat-value {
+    font-family: var(--mono);
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--gold);
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+
+  .stat-label {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+  }
+
+  /* ── SECTION HEADER ─────────────────────────────────────── */
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .section-title {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-family: var(--mono);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .section-note {
+    font-size: 12px;
+    color: var(--text-dim);
+    font-family: var(--mono);
+  }
+
+  /* ── TABLE ──────────────────────────────────────────────── */
+  .table-wrap {
+    overflow-x: auto;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin-bottom: 40px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+
+  thead {
+    background: var(--surface2);
+    position: sticky;
+    top: 0;
+    z-index: 1;
+  }
+
+  th {
+    padding: 12px 16px;
+    text-align: left;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    white-space: nowrap;
+    cursor: pointer;
+    user-select: none;
+    border-bottom: 1px solid var(--border);
+    transition: color 0.15s;
+  }
+
+  th:hover { color: var(--gold); }
+
+  th.sorted-asc::after  { content: ' ↑'; color: var(--gold); }
+  th.sorted-desc::after { content: ' ↓'; color: var(--gold); }
+
+  td {
+    padding: 13px 16px;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text);
+  }
+
+  tr:last-child td { border-bottom: none; }
+
+  tbody tr {
+    transition: background 0.12s;
+  }
+
+  tbody tr:hover {
+    background: var(--gold-glow);
+  }
+
+  .preset-name {
+    font-weight: 700;
+    color: #fff;
+    font-family: var(--sans);
+    font-size: 13px;
+  }
+
+  .tag {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-size: 10px;
+    font-family: var(--mono);
+    font-weight: 700;
+    letter-spacing: 0.05em;
+  }
+
+  .tag-mits     { background: rgba(99,102,241,0.15); color: #818cf8; }
+  .tag-qct      { background: rgba(201,168,76,0.15); color: var(--gold); }
+  .tag-qcs      { background: rgba(16,185,129,0.15); color: #34d399; }
+
+  .status-active { color: var(--green); }
+  .status-paper  { color: var(--gold); }
+  .status-watch  { color: var(--amber); }
+
+  .pnl-pos { color: var(--green); }
+  .pnl-neg { color: var(--red); }
+  .pnl-neu { color: var(--text-dim); }
+
+  .wr-high { color: var(--green); }
+  .wr-mid  { color: var(--amber); }
+  .wr-low  { color: var(--red); }
+
+  .small-warn {
+    font-size: 10px;
+    color: var(--amber);
+    margin-left: 2px;
+  }
+
+  /* ── LEGEND ─────────────────────────────────────────────── */
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 20px 24px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin-bottom: 40px;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--text-dim);
+    font-family: var(--mono);
+  }
+
+  /* ── SUBMIT CTA ─────────────────────────────────────────── */
+  .cta {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--gold);
+    border-radius: 8px;
+    padding: 24px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .cta-text h3 {
+    font-size: 15px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 4px;
+  }
+
+  .cta-text p {
+    font-size: 13px;
+    color: var(--text-dim);
+  }
+
+  .cta-btn {
+    display: inline-block;
+    padding: 10px 24px;
+    background: var(--gold);
+    color: #000;
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-decoration: none;
+    border-radius: 4px;
+    white-space: nowrap;
+    transition: opacity 0.2s;
+  }
+
+  .cta-btn:hover { opacity: 0.85; }
+
+  /* ── FOOTER ─────────────────────────────────────────────── */
+  footer {
+    text-align: center;
+    padding: 24px 40px;
+    border-top: 1px solid var(--border);
+    font-size: 11px;
+    color: var(--text-dim);
+    font-family: var(--mono);
+  }
+
+  footer a { color: var(--gold); text-decoration: none; }
+</style>
+</head>
+<body>
+
+<!-- BANNER -->
+<div class="banner">
+  <div class="wolf-mark">🐺</div>
+  <div class="banner-inner">
+    <div class="banner-left">
+      <div class="banner-eyebrow">Quant Crawler Community</div>
+      <div class="banner-title">Strategy <span>Leaderboard</span></div>
+      <div class="banner-sub">Powered by LWTG · Built by the community</div>
+    </div>
+    <div class="banner-meta">
+      Last updated: 2026-07-24<br>
+      Maintained by <a href="https://github.com/lonewolftradinggroup-ai">@LoneWolfTradingGroup</a><br>
+      <a href="index.html">← Strategy Library</a>
+    </div>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <ul>
+    <li><a href="index.html">Library</a></li>
+    <li><a href="leaderboard.html" class="active">Leaderboard</a></li>
+    <li><a href="https://github.com/lonewolftradinggroup-ai/lwtg-strategies/blob/master/community/SUBMISSION_TEMPLATE.md">Submit</a></li>
+    <li><a href="https://github.com/lonewolftradinggroup-ai/lwtg-strategies">GitHub</a></li>
+  </ul>
+</nav>
+
+<main>
+
+  <!-- STATS BAR -->
+  <div class="stats-bar">
+    <div class="stat">
+      <div class="stat-value">8</div>
+      <div class="stat-label">Active Presets</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value">162</div>
+      <div class="stat-label">Total Trades</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value">71.9%</div>
+      <div class="stat-label">Overall WR</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value">+$1,334</div>
+      <div class="stat-label">Net P&L (after fees)</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value">2026-10-01</div>
+      <div class="stat-label">Next Refit</div>
+    </div>
+  </div>
+
+  <!-- VALIDATED TABLE -->
+  <div class="section-header">
+    <div class="section-title">🏆 Validated — 50+ Trades</div>
+    <div class="section-note">Click any column header to sort</div>
+  </div>
+
+  <div class="table-wrap">
+    <table id="validated-table">
+      <thead>
+        <tr>
+          <th data-col="preset">Preset</th>
+          <th data-col="strategy">Strategy</th>
+          <th data-col="instrument">Instrument</th>
+          <th data-col="tf">TF</th>
+          <th data-col="trades" data-type="num">Trades</th>
+          <th data-col="wr" data-type="pct">WR</th>
+          <th data-col="pf" data-type="num">PF</th>
+          <th data-col="pnl" data-type="num">Net P&L</th>
+          <th data-col="session">Session Edge</th>
+          <th data-col="status">Status</th>
+          <th data-col="submittedBy">Submitted By</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="preset-name">M2K-15m</span></td>
+          <td><span class="tag tag-mits">MITS</span></td>
+          <td>M2K</td>
+          <td>15m</td>
+          <td>54</td>
+          <td><span class="wr-mid">70.4%</span></td>
+          <td>0.69</td>
+          <td><span class="pnl-neg">-$370.40</span></td>
+          <td>New York</td>
+          <td><span class="status-watch">⚠️ Watch</span></td>
+          <td>@LoneWolfTradingGroup</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ALL PRESETS TABLE -->
+  <div class="section-header">
+    <div class="section-title">📊 All Presets — Including Sub-50 Samples</div>
+    <div class="section-note">⚠️ = fewer than 50 trades · results indicative only</div>
+  </div>
+
+  <div class="table-wrap">
+    <table id="all-table">
+      <thead>
+        <tr>
+          <th data-col="preset">Preset</th>
+          <th data-col="strategy">Strategy</th>
+          <th data-col="instrument">Instrument</th>
+          <th data-col="tf">TF</th>
+          <th data-col="trades" data-type="num">Trades</th>
+          <th data-col="wr" data-type="pct">WR</th>
+          <th data-col="pf" data-type="num">PF</th>
+          <th data-col="pnl" data-type="num">Net P&L</th>
+          <th data-col="session">Session Edge</th>
+          <th data-col="status">Status</th>
+          <th data-col="submittedBy">Submitted By</th>
+        </tr>
+      </thead>
+      <tbody id="all-tbody">
+        <tr data-pf="8.05" data-wr="91.7" data-pnl="1150.50" data-trades="24">
+          <td><span class="preset-name">MES-15m</span> <span class="small-warn">⚠️</span></td>
+          <td><span class="tag tag-mits">MITS</span></td>
+          <td>MES</td><td>15m</td>
+          <td>24</td>
+          <td><span class="wr-high">91.7%</span></td>
+          <td>8.05</td>
+          <td><span class="pnl-pos">+$1,150.50</span></td>
+          <td>New York</td>
+          <td><span class="status-active">✅ Active</span></td>
+          <td>@LoneWolfTradingGroup</td>
+        </tr>
+        <tr data-pf="2.67" data-wr="85.7" data-pnl="503.90" data-trades="7">
+          <td><span class="preset-name">MNQ-4m</span> <span class="small-warn">⚠️</span></td>
+          <td><span class="tag tag-qcs">QC Signals</span></td>
+          <td>MNQ</td><td>4m</td>
+          <td>7</td>
+          <td><span class="wr-high">85.7%</span></td>
+          <td>2.67</td>
+          <td><span class="pnl-pos">+$503.90</span></td>
+          <td>Tokyo/ETH</td>
+          <td><span class="status-active">✅ Active</span></td>
+          <td>@LoneWolfTradingGroup</td>
+        </tr>
+        <tr data-pf="999" data-wr="100" data-pnl="537.90" data-trades="3">
+          <td><span class="preset-name">MGC-2m-QCT</span> <span class="small-warn">⚠️</span></td>
+          <td><span class="tag tag-qct">QC Trend</span></td>
+          <td>MGC</td><td>2m</td>
+          <td>3</td>
+          <td><span class="wr-high">100%</span></td>
+          <td>—</td>
+          <td><span class="pnl-pos">+$537.90</span></td>
+          <td>All</td>
+          <td><span class="status-paper">📄 Paper</span></td>
+          <td>@LoneWolfTradingGroup</td>
+        </tr>
+        <tr data-pf="1.57" data-wr="82.8" data-pnl="576.50" data-trades="29">
+          <td><span class="preset-name">MGC-5m</span> <span class="small-warn">⚠️</span></td>
+          <td><span class="tag tag-mits">MITS</span></td>
+          <td>MGC</td><td>5m</td>
+          <td>29</td>
+          <td><span class="wr-high">82.8%</span></td>
+          <td>1.57</td>
+          <td><span class="pnl-pos">+$576.50</span></td>
+          <td>Tokyo/ETH</td>
+          <td><span class="status-active">✅ Active</span></td>
+          <td>@LoneWolfTradingGroup</td>
+        </tr>
+        <tr data-pf="1.28" data-wr="75.0" data-pnl="663.00" data-trades="20">
+          <td><span class="preset-name">MNQ-4m-QCT</span> <span class="small-warn">⚠️</span></td>
+          <td><span class="tag tag-qct">QC Trend</span></td>
+          <td>MNQ</td><td>4m</td>
+          <td>20</td>
+          <td><span class="wr-high">75.0%</span></td>
+          <td>1.28</td>
+          <td><span class="pnl-pos">+$663.00</span></td>
+          <td>Tokyo/ETH + NY</td>
+          <td><span class="status-paper">📄 Paper</span></td>
+          <td>@LoneWolfTradingGroup</td>
+        </tr>
+        <tr data-pf="1.29" data-wr="50.0" data-pnl="91.00" data-trades="4">
+          <td><span class="preset-name">MNQ-15m</span> <span class="small-warn">⚠️</span></td>
+          <td><span class="tag tag-mits">MITS</span></td>
+          <td>MNQ</td><td>15m</td>
+          <td>4</td>
+          <td><span class="wr-mid">50.0%</span></td>
+          <td>1.29</td>
+          <td><span class="pnl-pos">+$91.00</span></td>
+          <td>—</td>
+          <td><span class="status-active">✅ Active</span></td>
+          <td>@LoneWolfTradingGroup</td>
+        </tr>
+        <tr data-pf="0.69" data-wr="70.4" data-pnl="-370.40" data-trades="54">
+          <td><span class="preset-name">M2K-15m</span></td>
+          <td><span class="tag tag-mits">MITS</span></td>
+          <td>M2K</td><td>15m</td>
+          <td>54</td>
+          <td><span class="wr-mid">70.4%</span></td>
+          <td>0.69</td>
+          <td><span class="pnl-neg">-$370.40</span></td>
+          <td>New York</td>
+          <td><span class="status-watch">⚠️ Watch</span></td>
+          <td>@LoneWolfTradingGroup</td>
+        </tr>
+        <tr data-pf="0.62" data-wr="57.1" data-pnl="-437.12" data-trades="7">
+          <td><span class="preset-name">MES-5m</span> <span class="small-warn">⚠️</span></td>
+          <td><span class="tag tag-qcs">QC Signals</span></td>
+          <td>MES</td><td>5m</td>
+          <td>7</td>
+          <td><span class="wr-mid">57.1%</span></td>
+          <td>0.62</td>
+          <td><span class="pnl-neg">-$437.12</span></td>
+          <td>London</td>
+          <td><span class="status-watch">⚠️ Watch</span></td>
+          <td>@LoneWolfTradingGroup</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- LEGEND -->
+  <div class="legend">
+    <div class="legend-item"><span class="status-active">✅</span> Active — live or paper trading</div>
+    <div class="legend-item"><span class="status-paper">📄</span> Paper — not yet live</div>
+    <div class="legend-item"><span class="status-watch">⚠️</span> Watch — edge unconfirmed</div>
+    <div class="legend-item"><span class="small-warn">⚠️</span> Sub-50 trades — sample too small</div>
+    <div class="legend-item"><span class="pnl-neu">—</span> PF — no losses yet, not meaningful</div>
+    <div class="legend-item">Session Edge = strongest historical session</div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta">
+    <div class="cta-text">
+      <h3>Got a strategy that works?</h3>
+      <p>Submit your preset for community review. Minimum 50 backtest trades required for Validated listing.</p>
+    </div>
+    <a class="cta-btn" href="https://github.com/lonewolftradinggroup-ai/lwtg-strategies/blob/master/community/SUBMISSION_TEMPLATE.md">
+      VIEW TEMPLATE →
+    </a>
+  </div>
+
+</main>
+
+<footer>
+  Quant Crawler Community · Powered by LWTG 🐺 ·
+  <a href="https://github.com/lonewolftradinggroup-ai/lwtg-strategies">GitHub</a> ·
+  Not financial advice · Past performance does not guarantee future results
+</footer>
+
+<script>
+  function sortTable(tableId, colIdx, type, dir) {
+    const tbody = document.querySelector('#' + tableId + ' tbody');
+    const rows = Array.from(tbody.querySelectorAll('tr'));
+
+    rows.sort((a, b) => {
+      let av = a.cells[colIdx].innerText.trim();
+      let bv = b.cells[colIdx].innerText.trim();
+
+      if (type === 'num' || type === 'pct') {
+        av = parseFloat(av.replace(/[^0-9.\-]/g, '')) || 0;
+        bv = parseFloat(bv.replace(/[^0-9.\-]/g, '')) || 0;
+        // treat — as 999 for PF column
+        if (isNaN(av)) av = 999;
+        if (isNaN(bv)) bv = 999;
+      }
+
+      if (av < bv) return dir === 'asc' ? -1 : 1;
+      if (av > bv) return dir === 'asc' ? 1 : -1;
+      return 0;
+    });
+
+    rows.forEach(r => tbody.appendChild(r));
+  }
+
+  document.querySelectorAll('table').forEach(table => {
+    const headers = table.querySelectorAll('th');
+    let sortState = { col: null, dir: 'desc' };
+
+    headers.forEach((th, i) => {
+      th.addEventListener('click', () => {
+        const type = th.dataset.type || 'str';
+        const newDir = (sortState.col === i && sortState.dir === 'desc') ? 'asc' : 'desc';
+        sortState = { col: i, dir: newDir };
+
+        headers.forEach(h => h.classList.remove('sorted-asc', 'sorted-desc'));
+        th.classList.add(newDir === 'asc' ? 'sorted-asc' : 'sorted-desc');
+
+        sortTable(table.id, i, type, newDir);
+      });
+    });
+  });
+</script>
+</body>
+</html>

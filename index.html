@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QCC Strategy Library</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:        #0a0c10;
+    --surface:   #111318;
+    --surface2:  #181b22;
+    --border:    #1f2330;
+    --gold:      #c9a84c;
+    --gold-dim:  #8a6f2e;
+    --gold-glow: rgba(201,168,76,0.12);
+    --green:     #2ecc71;
+    --red:       #e74c3c;
+    --amber:     #f39c12;
+    --muted:     #4a5268;
+    --text:      #d4d8e8;
+    --text-dim:  #6b7494;
+    --mono:      'Space Mono', monospace;
+    --sans:      'Space Grotesk', sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+
+  /* ── BANNER ─────────────────────────────────────────────── */
+  .banner {
+    position: relative;
+    overflow: hidden;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 48px 40px 40px;
+  }
+
+  .banner::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(135deg, rgba(201,168,76,0.06) 0%, transparent 60%),
+      repeating-linear-gradient(
+        90deg,
+        transparent,
+        transparent 60px,
+        rgba(201,168,76,0.02) 60px,
+        rgba(201,168,76,0.02) 61px
+      );
+  }
+
+  .banner-inner {
+    position: relative;
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  .banner-eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .banner-eyebrow::before {
+    content: '';
+    display: inline-block;
+    width: 24px;
+    height: 1px;
+    background: var(--gold);
+  }
+
+  .banner-title {
+    font-size: clamp(28px, 5vw, 48px);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    color: #fff;
+  }
+
+  .banner-title span { color: var(--gold); }
+
+  .banner-sub {
+    margin-top: 10px;
+    font-size: 14px;
+    color: var(--text-dim);
+    font-family: var(--mono);
+  }
+
+  .banner-meta {
+    text-align: right;
+    font-size: 12px;
+    color: var(--text-dim);
+    font-family: var(--mono);
+    line-height: 2;
+  }
+
+  .banner-meta a { color: var(--gold); text-decoration: none; }
+  .banner-meta a:hover { text-decoration: underline; }
+
+  .wolf-mark {
+    position: absolute;
+    right: 40px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 80px;
+    opacity: 0.04;
+    user-select: none;
+    pointer-events: none;
+  }
+
+  /* ── NAV ────────────────────────────────────────────────── */
+  nav {
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+    padding: 0 40px;
+  }
+
+  nav ul {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    list-style: none;
+  }
+
+  nav a {
+    display: block;
+    padding: 14px 20px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-dim);
+    text-decoration: none;
+    border-bottom: 2px solid transparent;
+    transition: color 0.2s, border-color 0.2s;
+    font-family: var(--mono);
+    letter-spacing: 0.05em;
+  }
+
+  nav a:hover { color: var(--text); }
+  nav a.active { color: var(--gold); border-bottom-color: var(--gold); }
+
+  /* ── MAIN ───────────────────────────────────────────────── */
+  main {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 40px 40px 80px;
+  }
+
+  /* ── INTRO ──────────────────────────────────────────────── */
+  .intro {
+    padding: 28px 32px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--gold);
+    border-radius: 8px;
+    margin-bottom: 40px;
+    font-size: 14px;
+    color: var(--text-dim);
+    line-height: 1.8;
+  }
+
+  .intro strong { color: var(--text); }
+
+  /* ── SECTION HEADER ─────────────────────────────────────── */
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .section-title {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-family: var(--mono);
+  }
+
+  .section-note {
+    font-size: 12px;
+    color: var(--text-dim);
+    font-family: var(--mono);
+  }
+
+  /* ── PRESET GRID ────────────────────────────────────────── */
+  .preset-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 16px;
+    margin-bottom: 40px;
+  }
+
+  .preset-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px 24px;
+    transition: border-color 0.2s, background 0.2s;
+    text-decoration: none;
+    color: inherit;
+    display: block;
+  }
+
+  .preset-card:hover {
+    border-color: var(--gold-dim);
+    background: var(--surface2);
+  }
+
+  .card-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 14px;
+  }
+
+  .card-name {
+    font-size: 16px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 4px;
+  }
+
+  .card-sub {
+    font-size: 11px;
+    color: var(--text-dim);
+    font-family: var(--mono);
+  }
+
+  .tag {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 3px;
+    font-size: 10px;
+    font-family: var(--mono);
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+  }
+
+  .tag-mits { background: rgba(99,102,241,0.15); color: #818cf8; }
+  .tag-qct  { background: rgba(201,168,76,0.15); color: var(--gold); }
+  .tag-qcs  { background: rgba(16,185,129,0.15); color: #34d399; }
+
+  .card-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    padding-top: 14px;
+    border-top: 1px solid var(--border);
+  }
+
+  .card-stat-label {
+    font-size: 10px;
+    color: var(--text-dim);
+    font-family: var(--mono);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 3px;
+  }
+
+  .card-stat-value {
+    font-size: 14px;
+    font-weight: 600;
+    font-family: var(--mono);
+  }
+
+  .pnl-pos { color: var(--green); }
+  .pnl-neg { color: var(--red); }
+  .pnl-neu { color: var(--text-dim); }
+
+  .wr-high { color: var(--green); }
+  .wr-mid  { color: var(--amber); }
+  .wr-low  { color: var(--red); }
+
+  .status-dot {
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    margin-right: 6px;
+  }
+
+  .dot-active { background: var(--green); box-shadow: 0 0 6px var(--green); }
+  .dot-paper  { background: var(--gold); }
+  .dot-watch  { background: var(--amber); }
+
+  .card-status {
+    font-size: 11px;
+    font-family: var(--mono);
+    color: var(--text-dim);
+    margin-top: 12px;
+    display: flex;
+    align-items: center;
+  }
+
+  /* ── STANDARDS ──────────────────────────────────────────── */
+  .standards {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 24px 28px;
+    margin-bottom: 40px;
+  }
+
+  .standards h3 {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-family: var(--mono);
+    margin-bottom: 16px;
+  }
+
+  .standards ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .standards li {
+    font-size: 13px;
+    color: var(--text-dim);
+    padding-left: 20px;
+    position: relative;
+  }
+
+  .standards li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--gold-dim);
+    font-family: var(--mono);
+  }
+
+  .standards li strong { color: var(--text); }
+
+  /* ── CTA ────────────────────────────────────────────────── */
+  .cta {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--gold);
+    border-radius: 8px;
+    padding: 24px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .cta-text h3 {
+    font-size: 15px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 4px;
+  }
+
+  .cta-text p {
+    font-size: 13px;
+    color: var(--text-dim);
+  }
+
+  .cta-btn {
+    display: inline-block;
+    padding: 10px 24px;
+    background: var(--gold);
+    color: #000;
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-decoration: none;
+    border-radius: 4px;
+    white-space: nowrap;
+    transition: opacity 0.2s;
+  }
+
+  .cta-btn:hover { opacity: 0.85; }
+
+  /* ── FOOTER ─────────────────────────────────────────────── */
+  footer {
+    text-align: center;
+    padding: 24px 40px;
+    border-top: 1px solid var(--border);
+    font-size: 11px;
+    color: var(--text-dim);
+    font-family: var(--mono);
+  }
+
+  footer a { color: var(--gold); text-decoration: none; }
+</style>
+</head>
+<body>
+
+<!-- BANNER -->
+<div class="banner">
+  <div class="wolf-mark">🐺</div>
+  <div class="banner-inner">
+    <div class="banner-left">
+      <div class="banner-eyebrow">Quant Crawler Community</div>
+      <div class="banner-title">Strategy <span>Library</span></div>
+      <div class="banner-sub">Powered by LWTG · Built by the community</div>
+    </div>
+    <div class="banner-meta">
+      Last updated: 2026-07-24<br>
+      Maintained by <a href="https://github.com/lonewolftradinggroup-ai">@LoneWolfTradingGroup</a><br>
+      <a href="leaderboard.html">View Leaderboard →</a>
+    </div>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <ul>
+    <li><a href="index.html" class="active">Library</a></li>
+    <li><a href="leaderboard.html">Leaderboard</a></li>
+    <li><a href="https://github.com/lonewolftradinggroup-ai/lwtg-strategies/blob/master/community/SUBMISSION_TEMPLATE.md">Submit</a></li>
+    <li><a href="https://github.com/lonewolftradinggroup-ai/lwtg-strategies">GitHub</a></li>
+  </ul>
+</nav>
+
+<main>
+
+  <div class="intro">
+    Community-maintained collection of validated strategies, configurations, and results for the LWTG MITS framework.
+    <strong>All data is real — every trade logged, every result verified.</strong>
+    Presets marked ⚠️ have fewer than 50 trades; treat results as indicative only.
+    Minimum 50 backtest trades required to submit.
+  </div>
+
+  <!-- QC TREND -->
+  <div class="section-header">
+    <div class="section-title">QC Trend</div>
+    <div class="section-note">Trend-following · ATR brackets</div>
+  </div>
+
+  <div class="preset-grid">
+    <a class="preset-card" href="strategies/QCT/MNQ-4m-QCT/results.md">
+      <div class="card-top">
+        <div>
+          <div class="card-name">MNQ-4m-QCT ⚠️</div>
+          <div class="card-sub">MNQ · 4m · 3 contracts</div>
+        </div>
+        <span class="tag tag-qct">QC Trend</span>
+      </div>
+      <div class="card-stats">
+        <div>
+          <div class="card-stat-label">Trades</div>
+          <div class="card-stat-value pnl-neu">20</div>
+        </div>
+        <div>
+          <div class="card-stat-label">Win Rate</div>
+          <div class="card-stat-value wr-high">75.0%</div>
+        </div>
+        <div>
+          <div class="card-stat-label">Net P&L</div>
+          <div class="card-stat-value pnl-pos">+$663</div>
+        </div>
+      </div>
+      <div class="card-status"><span class="status-dot dot-paper"></span>Paper · Session edge: Tokyo/ETH + NY</div>
+    </a>
+
+    <a class="preset-card" href="strategies/QCT/MGC-2m-QCT/results.md">
+      <div class="card-top">
+        <div>
+          <div class="card-name">MGC-2m-QCT ⚠️</div>
+          <div class="card-sub">MGC · 2m · 3 contracts</div>
+        </div>
+        <span class="tag tag-qct">QC Trend</span>
+      </div>
+      <div class="card-stats">
+        <div>
+          <div class="card-stat-label">Trades</div>
+          <div class="card-stat-value pnl-neu">3</div>
+        </div>
+        <div>
+          <div class="card-stat-label">Win Rate</div>
+          <div class="card-stat-value wr-high">100%</div>
+        </div>
+        <div>
+          <div class="card-stat-label">Net P&L</div>
+          <div class="card-stat-value pnl-pos">+$538</div>
+        </div>
+      </div>
+      <div class="card-status"><span class="status-dot dot-paper"></span>Paper · Session edge: All · % stop on MGC</div>
+    </a>
+  </div>
+
+  <!-- QC SIGNALS -->
+  <div class="section-header">
+    <div class="section-title">QC Signals</div>
+    <div class="section-note">Signal-based · strategy defaults</div>
+  </div>
+
+  <div class="preset-grid">
+    <a class="preset-card" href="strategies/QCS/MNQ-4m/results.md">
+      <div class="card-top">
+        <div>
+          <div class="card-name">MNQ-4m ⚠️</div>
+          <div class="card-sub">MNQ · 4m · 3 contracts</div>
+        </div>
+        <span class="tag tag-qcs">QC Signals</span>
+      </div>
+      <div class="card-stats">
+        <div>
+          <div class="card-stat-label">Trades</div>
+          <div class="card-stat-value pnl-neu">7</div>
+        </div>
+        <div>
+          <div class="card-stat-label">Win Rate</div>
+          <div class="card-stat-value wr-high">85.7%</div>
+        </div>
+        <div>
+          <div class="card-stat-label">Net P&L</div>
+          <div class="card-stat-value pnl-pos">+$504</div>
+        </div>
+      </div>
+      <div class="card-status"><span class="status-dot dot-active"></span>Active · Session edge: Tokyo/ETH</div>
+    </a>
+
+    <a class="preset-card" href="strategies/QCS/MES-5m/results.md">
+      <div class="card-top">
+        <div>
+          <div class="card-name">MES-5m ⚠️</div>
+          <div class="card-sub">MES · 5m · 3 contracts</div>
+        </div>
+        <span class="tag tag-qcs">QC Signals</span>
+      </div>
+      <div class="card-stats">
+        <div>
+          <div class="card-stat-label">Trades</div>
+          <div class="card-stat-value pnl-neu">7</div>
+        </div>
+        <div>
+          <div class="card-stat-label">Win Rate</div>
+          <div class="card-stat-value wr-mid">57.1%</div>
+        </div>
+        <div>
+          <div class="card-stat-label">Net P&L</div>
+          <div class="card-stat-value pnl-neg">-$437</div>
+        </div>
+      </div>
+      <div class="card-status"><span class="status-dot dot-watch"></span>Watch · NY session drag</div>
+    </a>
+  </div>
+
+  <!-- MITS -->
+  <div class="section-header">
+    <div class="section-title">MITS</div>
+    <div class="section-note">Multi-instrument · ATR dynamic brackets</div>
+  </div>
+
+  <div class="preset-grid">
+    <a class="preset-card" href="strategies/MITS/MES-15m/results.md">
+      <div class="card-top">
+        <div>
+          <div class="card-name">MES-15m ⚠️</div>
+          <div class="card-sub">MES · 15m · 3 contracts</div>
+        </div>
+        <span class="tag tag-mits">MITS</span>
+      </div>
+      <div class="card-stats">
+        <div>
+          <div class="card-stat-label">Trades</div>
+          <div class="card-stat-value pnl-neu">24</div>
+        </div>
+        <div>
+          <div class="card-stat-label">Win Rate</div>
+          <div class="card-stat-value wr-high">91.7%</div>
+        </div>
+        <div>
+          <div class="card-stat-label">Net P&L</div>
+          <div class="card-stat-value pnl-pos">+$1,151</div>
+        </div>
+      </div>
+      <div class="card-status"><span class="status-dot dot-active"></span>Active · Session edge: New York</div>
+    </a>
+
+    <a class="preset-card" href="strategies/MITS/MNQ-15m/results.md">
+      <div class="card-top">
+        <div>
+          <div class="card-name">MNQ-15m ⚠️</div>
+          <div class="card-sub">MNQ · 15m · 1 contract · Block 10:00–12:00 CT</div>
+        </div>
+        <span class="tag tag-mits">MITS</span>
+      </div>
+      <div class="card-stats">
+        <div>
+          <div class="card-stat-label">Trades</div>
+          <div class="card-stat-value pnl-neu">4</div>
+        </div>
+        <div>
+          <div class="card-stat-label">Win Rate</div>
+          <div class="card-stat-value wr-mid">50.0%</div>
+        </div>
+        <div>
+          <div class="card-stat-label">Net P&L</div>
+          <div class="card-stat-value pnl-pos">+$91</div>
+        </div>
+      </div>
+      <div class="card-status"><span class="status-dot dot-active"></span>Active · Low sample</div>
+    </a>
+
+    <a class="preset-card" href="strategies/MITS/MGC-5m/results.md">
+      <div class="card-top">
+        <div>
+          <div class="card-name">MGC-5m ⚠️</div>
+          <div class="card-sub">MGC · 5m · 1 contract · Block 10:00–12:00 CT</div>
+        </div>
+        <span class="tag tag-mits">MITS</span>
+      </div>
+      <div class="card-stats">
+        <div>
+          <div class="card-stat-label">Trades</div>
+          <div class="card-stat-value pnl-neu">29</div>
+        </div>
+        <div>
+          <div class="card-stat-label">Win Rate</div>
+          <div class="card-stat-value wr-high">82.8%</div>
+        </div>
+        <div>
+          <div class="card-stat-label">Net P&L</div>
+          <div class="card-stat-value pnl-pos">+$577</div>
+        </div>
+      </div>
+      <div class="card-status"><span class="status-dot dot-active"></span>Active · Session edge: Tokyo/ETH</div>
+    </a>
+
+    <a class="preset-card" href="strategies/MITS/M2K-15m/results.md">
+      <div class="card-top">
+        <div>
+          <div class="card-name">M2K-15m</div>
+          <div class="card-sub">M2K · 15m · 1 contract · Block 13:00–18:00 CT</div>
+        </div>
+        <span class="tag tag-mits">MITS</span>
+      </div>
+      <div class="card-stats">
+        <div>
+          <div class="card-stat-label">Trades</div>
+          <div class="card-stat-value pnl-neu">54</div>
+        </div>
+        <div>
+          <div class="card-stat-label">Win Rate</div>
+          <div class="card-stat-value wr-mid">70.4%</div>
+        </div>
+        <div>
+          <div class="card-stat-label">Net P&L</div>
+          <div class="card-stat-value pnl-neg">-$370</div>
+        </div>
+      </div>
+      <div class="card-status"><span class="status-dot dot-watch"></span>Watch · TF switch unvalidated · Oct 1 refit</div>
+    </a>
+  </div>
+
+  <!-- STANDARDS -->
+  <div class="standards">
+    <h3>Submission Standards</h3>
+    <ul>
+      <li><strong>Minimum 50 backtest trades</strong> to appear in the Validated leaderboard section</li>
+      <li><strong>Paper results required</strong> before any live recommendation</li>
+      <li><strong>No TP/SL tuning</strong> on presets with fewer than 50 trades</li>
+      <li><strong>MGC instruments require percent stop</strong> — ATR stops do not suit gold's volatility profile</li>
+      <li><strong>Refit cadence: quarterly</strong> — next refit Oct 1, 2026</li>
+    </ul>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta">
+    <div class="cta-text">
+      <h3>Got a strategy that works?</h3>
+      <p>Submit your preset for community review. Fill out the template and post in Discord.</p>
+    </div>
+    <a class="cta-btn" href="https://github.com/lonewolftradinggroup-ai/lwtg-strategies/blob/master/community/SUBMISSION_TEMPLATE.md">
+      VIEW TEMPLATE →
+    </a>
+  </div>
+
+</main>
+
+<footer>
+  Quant Crawler Community · Powered by LWTG 🐺 ·
+  <a href="https://github.com/lonewolftradinggroup-ai/lwtg-strategies">GitHub</a> ·
+  Not financial advice · Past performance does not guarantee future results
+</footer>
+
+</body>
+</html>
